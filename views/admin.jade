@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1 Admin Console
+
+  h2 Players
+  table
+    thead
+      tr
+        th Delete
+        th Name
+        th Score
+        th Buzzes
+        th Adjust Score
+    tbody(id="players")
+  
+  h2 Buzzes
+  button(id="clear-buzzes") Clear
+  ol(id="buzzes")
+ 
+  script(type="text/javascript", src="/socket.io/socket.io.js")
+  script(type="text/javascript", src="/js/admin.js")

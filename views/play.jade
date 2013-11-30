@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  p Hey there, <b>#{name}</b>.
+  p Press the button below when you want to buzz in.
+  p You can also press the space bar on your keyboard.
+  button(id="buzz-button", class="big-button") Buzz!
+  b
+    p(id="output")
+  script(type="text/javascript").
+    var name = "#{name}";
+  script(type="text/javascript", src="/js/play.js")

@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1 Buzzer
+  p Type your name in below to begin.
+  form(method="get", action="/play")
+    p
+      label(for="name-button") Name: 
+      input(type="text", name="name", id="name-button")
+    p
+      input(type="submit", value="Start")

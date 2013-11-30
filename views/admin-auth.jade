@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1 Admin Auth
+
+  form(method="post")
+    label(for="password") Password: 
+    input(type="password", id="password", name="password")
+    input(type="submit", value="Submit")

@@ -1,8 +1,4 @@
-
-/**
- * Module dependencies.
- */
-
+// load dependencies
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -10,6 +6,14 @@ var _s = require('underscore.string');
 var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
+
+// get the admin password
+if(process.argv.length != 3) {
+  process.stderr.write('Exactly one argument was expected, which is the admin password.\n');
+  process.exit(1);
+}
+var password = process.argv[2];
+var admin_token = Math.random() + '.' + Math.random() + '.' + Math.random() + '.' + Math.random();
 
 // all environments
 app.set('port', process.env.PORT || 80);
@@ -19,6 +23,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(express.cookieParser());
 app.use(express.methodOverride());
 app.use(express.bodyParser());
 app.use(app.router);
@@ -84,7 +89,25 @@ app.post('/buzz', function(req, res) {
   res.send(200);
 })
 
+app.get('/admin-auth', function(req, res) {
+  res.render('admin-auth', {title: 'Admin Auth'});
+});
+
+app.post('/admin-auth', function(req, res) {
+  console.log(req.body.password, password);
+  if(req.body.password == password) {
+    res.cookie('admin_token', admin_token);
+    res.redirect('/admin');
+  } else {
+    res.redirect('/admin-auth');
+  }
+});
+
 app.get('/admin', function(req, res) {
+  if(req.cookies.admin_token != admin_token) {
+    res.redirect('/admin-auth');
+    return;
+  }
   res.render('admin', {title: 'Admin', players: players});
 });
 
